@@ -1,0 +1,35 @@
+Compiler   : BASCOM 8051 LIBRARY V 2.11
+Processor  : 8052
+Report     : AMF
+Date       : 10-31-2014
+Time       : 19:19:26
+
+Baud Timer : 1
+Baudrate   : 0
+Frequency  : 12000000
+Clock div. : 12
+ROM start  : &H0
+RAM start  : &H0
+LCD mode   : 4-bit
+StackStart : &H22
+Used ROM   : &H1FFF     8191 (dec)  > doesn't fit into selected codesize : 2048
+
+--------------------------------------------------------------------------------
+Variable                         Type            Address(hex)   Address(dec)
+--------------------------------------------------------------------------------
+
+ERR                              Bit               20.4
+
+
+A                                Byte              0021          33 
+
+
+
+
+
+CONSTANTS
+--------------------------------------------------------------------------------
+Constant                         Value
+--------------------------------------------------------------------------------
+_BUILDVERSION                    211
+

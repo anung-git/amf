@@ -1,0 +1,1349 @@
+
+genset_pakmin.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000045e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000004b2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000004d  00000000  00000000  000004d2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000d7e  00000000  00000000  0000051f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 000001a1  00000000  00000000  0000129d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000a7a  00000000  00000000  0000143e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000060  00000000  00000000  00001eb8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000e5  00000000  00000000  00001f18  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    00000eb3  00000000  00000000  00001ffd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000210  00000000  00000000  00002eb0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2a c0       	rjmp	.+84     	; 0x58 <__bad_interrupt>
+   4:	29 c0       	rjmp	.+82     	; 0x58 <__bad_interrupt>
+   6:	28 c0       	rjmp	.+80     	; 0x58 <__bad_interrupt>
+   8:	27 c0       	rjmp	.+78     	; 0x58 <__bad_interrupt>
+   a:	26 c0       	rjmp	.+76     	; 0x58 <__bad_interrupt>
+   c:	25 c0       	rjmp	.+74     	; 0x58 <__bad_interrupt>
+   e:	24 c0       	rjmp	.+72     	; 0x58 <__bad_interrupt>
+  10:	23 c0       	rjmp	.+70     	; 0x58 <__bad_interrupt>
+  12:	22 c0       	rjmp	.+68     	; 0x58 <__bad_interrupt>
+  14:	21 c0       	rjmp	.+66     	; 0x58 <__bad_interrupt>
+  16:	20 c0       	rjmp	.+64     	; 0x58 <__bad_interrupt>
+  18:	1f c0       	rjmp	.+62     	; 0x58 <__bad_interrupt>
+  1a:	1e c0       	rjmp	.+60     	; 0x58 <__bad_interrupt>
+  1c:	1d c0       	rjmp	.+58     	; 0x58 <__bad_interrupt>
+  1e:	1c c0       	rjmp	.+56     	; 0x58 <__bad_interrupt>
+  20:	1b c0       	rjmp	.+54     	; 0x58 <__bad_interrupt>
+  22:	1a c0       	rjmp	.+52     	; 0x58 <__bad_interrupt>
+  24:	19 c0       	rjmp	.+50     	; 0x58 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf ed       	ldi	r28, 0xDF	; 223
+  2c:	cd bf       	out	0x3d, r28	; 61
+
+0000002e <__do_copy_data>:
+  2e:	10 e0       	ldi	r17, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	ee e5       	ldi	r30, 0x5E	; 94
+  36:	f4 e0       	ldi	r31, 0x04	; 4
+  38:	02 c0       	rjmp	.+4      	; 0x3e <.do_copy_data_start>
+
+0000003a <.do_copy_data_loop>:
+  3a:	05 90       	lpm	r0, Z+
+  3c:	0d 92       	st	X+, r0
+
+0000003e <.do_copy_data_start>:
+  3e:	a0 36       	cpi	r26, 0x60	; 96
+  40:	b1 07       	cpc	r27, r17
+  42:	d9 f7       	brne	.-10     	; 0x3a <.do_copy_data_loop>
+
+00000044 <__do_clear_bss>:
+  44:	10 e0       	ldi	r17, 0x00	; 0
+  46:	a0 e6       	ldi	r26, 0x60	; 96
+  48:	b0 e0       	ldi	r27, 0x00	; 0
+  4a:	01 c0       	rjmp	.+2      	; 0x4e <.do_clear_bss_start>
+
+0000004c <.do_clear_bss_loop>:
+  4c:	1d 92       	st	X+, r1
+
+0000004e <.do_clear_bss_start>:
+  4e:	a0 36       	cpi	r26, 0x60	; 96
+  50:	b1 07       	cpc	r27, r17
+  52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
+  54:	53 d0       	rcall	.+166    	; 0xfc <main>
+  56:	01 c2       	rjmp	.+1026   	; 0x45a <_exit>
+
+00000058 <__bad_interrupt>:
+  58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
+
+0000005a <read_genset>:
+#define ddr_pln_out			DDRB
+#define bit_pln_out			PB0
+
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+  5a:	8a 98       	cbi	0x11, 2	; 17
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+  5c:	92 9a       	sbi	0x12, 2	; 18
+  5e:	20 e0       	ldi	r18, 0x00	; 0
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  60:	40 ed       	ldi	r20, 0xD0	; 208
+  62:	57 e0       	ldi	r21, 0x07	; 7
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_genset_in,bit_genset_in)){
+  64:	82 9b       	sbis	0x10, 2	; 16
+  66:	02 c0       	rjmp	.+4      	; 0x6c <read_genset+0x12>
+  68:	80 e0       	ldi	r24, 0x00	; 0
+  6a:	08 95       	ret
+  6c:	ca 01       	movw	r24, r20
+  6e:	01 97       	sbiw	r24, 0x01	; 1
+  70:	f1 f7       	brne	.-4      	; 0x6e <read_genset+0x14>
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+  72:	2f 5f       	subi	r18, 0xFF	; 255
+  74:	2a 30       	cpi	r18, 0x0A	; 10
+  76:	b1 f7       	brne	.-20     	; 0x64 <read_genset+0xa>
+  78:	8f ef       	ldi	r24, 0xFF	; 255
+		}
+		a=0xff;
+		_delay_ms(1);
+	}
+	return a;
+}
+  7a:	08 95       	ret
+
+0000007c <sensor>:
+/******************************************************************************/
+unsigned char sensor(void){
+	cbi(ddr_sensor2,bit_sensor2);	//set pin input 
+  7c:	89 98       	cbi	0x11, 1	; 17
+	sbi(port_sensor2,bit_sensor2);	//pull up input
+  7e:	91 9a       	sbi	0x12, 1	; 18
+	cbi(ddr_sensor1,bit_sensor1);	//set pin input 
+  80:	88 98       	cbi	0x11, 0	; 17
+	sbi(port_sensor1,bit_sensor1);	//pull up input
+  82:	90 9a       	sbi	0x12, 0	; 18
+  84:	20 e0       	ldi	r18, 0x00	; 0
+  86:	40 ed       	ldi	r20, 0xD0	; 208
+  88:	57 e0       	ldi	r21, 0x07	; 7
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_sensor1,bit_sensor1)&&bit_is_set(pin_sensor2,bit_sensor2)){
+  8a:	80 9b       	sbis	0x10, 0	; 16
+  8c:	04 c0       	rjmp	.+8      	; 0x96 <sensor+0x1a>
+  8e:	81 9b       	sbis	0x10, 1	; 16
+  90:	02 c0       	rjmp	.+4      	; 0x96 <sensor+0x1a>
+  92:	80 e0       	ldi	r24, 0x00	; 0
+  94:	08 95       	ret
+  96:	ca 01       	movw	r24, r20
+  98:	01 97       	sbiw	r24, 0x01	; 1
+  9a:	f1 f7       	brne	.-4      	; 0x98 <sensor+0x1c>
+	cbi(ddr_sensor2,bit_sensor2);	//set pin input 
+	sbi(port_sensor2,bit_sensor2);	//pull up input
+	cbi(ddr_sensor1,bit_sensor1);	//set pin input 
+	sbi(port_sensor1,bit_sensor1);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+  9c:	2f 5f       	subi	r18, 0xFF	; 255
+  9e:	2a 30       	cpi	r18, 0x0A	; 10
+  a0:	a1 f7       	brne	.-24     	; 0x8a <sensor+0xe>
+  a2:	8f ef       	ldi	r24, 0xFF	; 255
+		}
+		a=0xff;
+		_delay_ms(1);
+	}
+	return a;
+}
+  a4:	08 95       	ret
+
+000000a6 <read_pln>:
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+  a6:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+  a8:	93 9a       	sbi	0x12, 3	; 18
+  aa:	20 e0       	ldi	r18, 0x00	; 0
+  ac:	40 ed       	ldi	r20, 0xD0	; 208
+  ae:	57 e0       	ldi	r21, 0x07	; 7
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+  b0:	83 9b       	sbis	0x10, 3	; 16
+  b2:	02 c0       	rjmp	.+4      	; 0xb8 <read_pln+0x12>
+  b4:	80 e0       	ldi	r24, 0x00	; 0
+  b6:	08 95       	ret
+  b8:	ca 01       	movw	r24, r20
+  ba:	01 97       	sbiw	r24, 0x01	; 1
+  bc:	f1 f7       	brne	.-4      	; 0xba <read_pln+0x14>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+  be:	2f 5f       	subi	r18, 0xFF	; 255
+  c0:	2a 30       	cpi	r18, 0x0A	; 10
+  c2:	b1 f7       	brne	.-20     	; 0xb0 <read_pln+0xa>
+  c4:	8f ef       	ldi	r24, 0xFF	; 255
+		}
+		a=0xff;
+		_delay_ms(1);
+	}
+	return a;
+}
+  c6:	08 95       	ret
+
+000000c8 <delay>:
+/******************************************************************************/
+void delay(unsigned char wait){
+  c8:	90 e0       	ldi	r25, 0x00	; 0
+  ca:	48 ec       	ldi	r20, 0xC8	; 200
+  cc:	50 e0       	ldi	r21, 0x00	; 0
+  ce:	13 c0       	rjmp	.+38     	; 0xf6 <__stack+0x17>
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+  d0:	28 e8       	ldi	r18, 0x88	; 136
+  d2:	33 e1       	ldi	r19, 0x13	; 19
+  d4:	fa 01       	movw	r30, r20
+  d6:	31 97       	sbiw	r30, 0x01	; 1
+  d8:	f1 f7       	brne	.-4      	; 0xd6 <delay+0xe>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+  da:	21 50       	subi	r18, 0x01	; 1
+  dc:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+  de:	d1 f7       	brne	.-12     	; 0xd4 <delay+0xc>
+	_delay_ms(500);
+	wdt_reset();
+  e0:	a8 95       	wdr
+  e2:	28 e8       	ldi	r18, 0x88	; 136
+  e4:	33 e1       	ldi	r19, 0x13	; 19
+  e6:	fa 01       	movw	r30, r20
+  e8:	31 97       	sbiw	r30, 0x01	; 1
+  ea:	f1 f7       	brne	.-4      	; 0xe8 <__stack+0x9>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+  ec:	21 50       	subi	r18, 0x01	; 1
+  ee:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+  f0:	d1 f7       	brne	.-12     	; 0xe6 <__stack+0x7>
+	_delay_ms(500);
+	wdt_reset();	
+  f2:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+  f4:	9f 5f       	subi	r25, 0xFF	; 255
+  f6:	98 17       	cp	r25, r24
+  f8:	58 f3       	brcs	.-42     	; 0xd0 <delay+0x8>
+	_delay_ms(500);
+	wdt_reset();
+	_delay_ms(500);
+	wdt_reset();	
+	}
+}
+  fa:	08 95       	ret
+
+000000fc <main>:
+/******************************************************************************/
+int main(void){
+  fc:	0f 93       	push	r16
+  fe:	1f 93       	push	r17
+ 100:	cf 93       	push	r28
+ 102:	df 93       	push	r29
+	unsigned char i;
+	unsigned char acc_off;
+	cbi(ddr_genset_in,bit_genset_in);				//set pin input 
+ 104:	8a 98       	cbi	0x11, 2	; 17
+	sbi(port_genset_in,bit_genset_in);				//pull up input
+ 106:	92 9a       	sbi	0x12, 2	; 18
+	cbi(ddr_pln_in,bit_pln_in);						//set pin input 
+ 108:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);					//pull up input
+ 10a:	93 9a       	sbi	0x12, 3	; 18
+	sbi(ddr_starter,bit_starter);					//starter output
+ 10c:	ba 9a       	sbi	0x17, 2	; 23
+	cbi(port_starter,bit_starter);					//matikan starter
+ 10e:	c2 98       	cbi	0x18, 2	; 24
+	sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 110:	b8 9a       	sbi	0x17, 0	; 23
+	cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 112:	c0 98       	cbi	0x18, 0	; 24
+	sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 114:	b9 9a       	sbi	0x17, 1	; 23
+	cbi(port_genset_out,bit_genset_out);			//matikan genset
+ 116:	c1 98       	cbi	0x18, 1	; 24
+	sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 118:	bc 9a       	sbi	0x17, 4	; 23
+	cbi(port_buzer,bit_buzer);						//matikan out buzer
+ 11a:	c4 98       	cbi	0x18, 4	; 24
+	sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 11c:	bb 9a       	sbi	0x17, 3	; 23
+	cbi(port_preheat,bit_preheat);					//preheat mati
+ 11e:	c3 98       	cbi	0x18, 3	; 24
+	sbi(ddr_acc,bit_acc);							//acc set out
+ 120:	be 9a       	sbi	0x17, 6	; 23
+	cbi(port_acc,bit_acc);							//acc off
+ 122:	c6 98       	cbi	0x18, 6	; 24
+	wdt_enable(WDTO_2S);
+ 124:	2f e0       	ldi	r18, 0x0F	; 15
+ 126:	88 e1       	ldi	r24, 0x18	; 24
+ 128:	90 e0       	ldi	r25, 0x00	; 0
+ 12a:	0f b6       	in	r0, 0x3f	; 63
+ 12c:	f8 94       	cli
+ 12e:	a8 95       	wdr
+ 130:	81 bd       	out	0x21, r24	; 33
+ 132:	0f be       	out	0x3f, r0	; 63
+ 134:	21 bd       	out	0x21, r18	; 33
+ 136:	88 ee       	ldi	r24, 0xE8	; 232
+ 138:	93 e0       	ldi	r25, 0x03	; 3
+ 13a:	28 ec       	ldi	r18, 0xC8	; 200
+ 13c:	30 e0       	ldi	r19, 0x00	; 0
+ 13e:	f9 01       	movw	r30, r18
+ 140:	31 97       	sbiw	r30, 0x01	; 1
+ 142:	f1 f7       	brne	.-4      	; 0x140 <main+0x44>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 144:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 146:	d9 f7       	brne	.-10     	; 0x13e <main+0x42>
+ 148:	3c e3       	ldi	r19, 0x3C	; 60
+ 14a:	00 ed       	ldi	r16, 0xD0	; 208
+ 14c:	17 e0       	ldi	r17, 0x07	; 7
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 14e:	c8 ec       	ldi	r28, 0xC8	; 200
+ 150:	d0 e0       	ldi	r29, 0x00	; 0
+ 152:	36 c0       	rjmp	.+108    	; 0x1c0 <main+0xc4>
+ 154:	fe 01       	movw	r30, r28
+ 156:	31 97       	sbiw	r30, 0x01	; 1
+ 158:	f1 f7       	brne	.-4      	; 0x156 <main+0x5a>
+ 15a:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 15c:	d9 f7       	brne	.-10     	; 0x154 <main+0x58>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 15e:	a8 95       	wdr
+ 160:	88 e8       	ldi	r24, 0x88	; 136
+ 162:	93 e1       	ldi	r25, 0x13	; 19
+ 164:	fe 01       	movw	r30, r28
+ 166:	31 97       	sbiw	r30, 0x01	; 1
+ 168:	f1 f7       	brne	.-4      	; 0x166 <main+0x6a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 16a:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 16c:	d9 f7       	brne	.-10     	; 0x164 <main+0x68>
+	_delay_ms(500);
+	wdt_reset();	
+ 16e:	a8 95       	wdr
+				cbi(port_buzer,bit_buzer);						//matikan out buzer
+				sbi(ddr_preheat,bit_preheat);					//set preheat output
+				cbi(port_preheat,bit_preheat);					//preheat mati
+				sbi(ddr_acc,bit_acc);							//acc set out
+				delay(1);
+				if(acc_off>0)acc_off--;
+ 170:	33 23       	and	r19, r19
+ 172:	11 f0       	breq	.+4      	; 0x178 <main+0x7c>
+ 174:	31 50       	subi	r19, 0x01	; 1
+ 176:	01 c0       	rjmp	.+2      	; 0x17a <main+0x7e>
+				else cbi(port_acc,bit_acc);							//acc off			
+ 178:	c6 98       	cbi	0x18, 6	; 24
+	}
+	return a;
+}
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+ 17a:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+ 17c:	93 9a       	sbi	0x12, 3	; 18
+ 17e:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+ 180:	83 9b       	sbis	0x10, 3	; 16
+ 182:	02 c0       	rjmp	.+4      	; 0x188 <main+0x8c>
+ 184:	20 e0       	ldi	r18, 0x00	; 0
+ 186:	18 c0       	rjmp	.+48     	; 0x1b8 <main+0xbc>
+ 188:	c8 01       	movw	r24, r16
+ 18a:	01 97       	sbiw	r24, 0x01	; 1
+ 18c:	f1 f7       	brne	.-4      	; 0x18a <main+0x8e>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 18e:	2f 5f       	subi	r18, 0xFF	; 255
+ 190:	2a 30       	cpi	r18, 0x0A	; 10
+ 192:	b1 f7       	brne	.-20     	; 0x180 <main+0x84>
+ 194:	4d c1       	rjmp	.+666    	; 0x430 <main+0x334>
+ 196:	fe 01       	movw	r30, r28
+ 198:	31 97       	sbiw	r30, 0x01	; 1
+ 19a:	f1 f7       	brne	.-4      	; 0x198 <main+0x9c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 19c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 19e:	d9 f7       	brne	.-10     	; 0x196 <main+0x9a>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 1a0:	a8 95       	wdr
+ 1a2:	88 e8       	ldi	r24, 0x88	; 136
+ 1a4:	93 e1       	ldi	r25, 0x13	; 19
+ 1a6:	fe 01       	movw	r30, r28
+ 1a8:	31 97       	sbiw	r30, 0x01	; 1
+ 1aa:	f1 f7       	brne	.-4      	; 0x1a8 <main+0xac>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1ac:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1ae:	d9 f7       	brne	.-10     	; 0x1a6 <main+0xaa>
+	_delay_ms(500);
+	wdt_reset();	
+ 1b0:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 1b2:	2f 5f       	subi	r18, 0xFF	; 255
+ 1b4:	25 30       	cpi	r18, 0x05	; 5
+ 1b6:	21 f0       	breq	.+8      	; 0x1c0 <main+0xc4>
+ 1b8:	88 e8       	ldi	r24, 0x88	; 136
+ 1ba:	93 e1       	ldi	r25, 0x13	; 19
+ 1bc:	ec cf       	rjmp	.-40     	; 0x196 <main+0x9a>
+ 1be:	3c e3       	ldi	r19, 0x3C	; 60
+	}
+	return a;
+}
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+ 1c0:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+ 1c2:	93 9a       	sbi	0x12, 3	; 18
+ 1c4:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+ 1c6:	83 99       	sbic	0x10, 3	; 16
+ 1c8:	07 c0       	rjmp	.+14     	; 0x1d8 <main+0xdc>
+ 1ca:	c8 01       	movw	r24, r16
+ 1cc:	01 97       	sbiw	r24, 0x01	; 1
+ 1ce:	f1 f7       	brne	.-4      	; 0x1cc <main+0xd0>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 1d0:	2f 5f       	subi	r18, 0xFF	; 255
+ 1d2:	2a 30       	cpi	r18, 0x0A	; 10
+ 1d4:	c1 f7       	brne	.-16     	; 0x1c6 <main+0xca>
+ 1d6:	d1 cf       	rjmp	.-94     	; 0x17a <main+0x7e>
+	}
+	return a;
+}
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+ 1d8:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+ 1da:	93 9a       	sbi	0x12, 3	; 18
+ 1dc:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+ 1de:	83 99       	sbic	0x10, 3	; 16
+ 1e0:	07 c0       	rjmp	.+14     	; 0x1f0 <main+0xf4>
+ 1e2:	c8 01       	movw	r24, r16
+ 1e4:	01 97       	sbiw	r24, 0x01	; 1
+ 1e6:	f1 f7       	brne	.-4      	; 0x1e4 <main+0xe8>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 1e8:	2f 5f       	subi	r18, 0xFF	; 255
+ 1ea:	2a 30       	cpi	r18, 0x0A	; 10
+ 1ec:	c1 f7       	brne	.-16     	; 0x1de <main+0xe2>
+ 1ee:	ff c0       	rjmp	.+510    	; 0x3ee <main+0x2f2>
+		};
+/******************************************************************************/
+//	hidupkan acc dan preheat
+/******************************************************************************/
+		if(!read_pln()){			//pln mati
+			sbi(ddr_starter,bit_starter);					//starter output
+ 1f0:	ba 9a       	sbi	0x17, 2	; 23
+			cbi(port_starter,bit_starter);					//matikan starter
+ 1f2:	c2 98       	cbi	0x18, 2	; 24
+			sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 1f4:	b8 9a       	sbi	0x17, 0	; 23
+			cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 1f6:	c0 98       	cbi	0x18, 0	; 24
+			sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 1f8:	b9 9a       	sbi	0x17, 1	; 23
+			cbi(port_genset_out,bit_genset_out);			//matikan genset
+ 1fa:	c1 98       	cbi	0x18, 1	; 24
+			sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 1fc:	bc 9a       	sbi	0x17, 4	; 23
+			cbi(port_buzer,bit_buzer);						//matikan out buzer
+ 1fe:	c4 98       	cbi	0x18, 4	; 24
+			sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 200:	bb 9a       	sbi	0x17, 3	; 23
+			sbi(port_preheat,bit_preheat);					//preheat hidup
+ 202:	c3 9a       	sbi	0x18, 3	; 24
+			sbi(ddr_acc,bit_acc);							//acc set out
+ 204:	be 9a       	sbi	0x17, 6	; 23
+			sbi(port_acc,bit_acc);							//acc on
+ 206:	c6 9a       	sbi	0x18, 6	; 24
+ 208:	20 e0       	ldi	r18, 0x00	; 0
+ 20a:	11 c0       	rjmp	.+34     	; 0x22e <main+0x132>
+ 20c:	fe 01       	movw	r30, r28
+ 20e:	31 97       	sbiw	r30, 0x01	; 1
+ 210:	f1 f7       	brne	.-4      	; 0x20e <main+0x112>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 212:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 214:	d9 f7       	brne	.-10     	; 0x20c <main+0x110>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 216:	a8 95       	wdr
+ 218:	88 e8       	ldi	r24, 0x88	; 136
+ 21a:	93 e1       	ldi	r25, 0x13	; 19
+ 21c:	fe 01       	movw	r30, r28
+ 21e:	31 97       	sbiw	r30, 0x01	; 1
+ 220:	f1 f7       	brne	.-4      	; 0x21e <main+0x122>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 222:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 224:	d9 f7       	brne	.-10     	; 0x21c <main+0x120>
+	_delay_ms(500);
+	wdt_reset();	
+ 226:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 228:	2f 5f       	subi	r18, 0xFF	; 255
+ 22a:	26 30       	cpi	r18, 0x06	; 6
+ 22c:	19 f0       	breq	.+6      	; 0x234 <main+0x138>
+ 22e:	88 e8       	ldi	r24, 0x88	; 136
+ 230:	93 e1       	ldi	r25, 0x13	; 19
+ 232:	ec cf       	rjmp	.-40     	; 0x20c <main+0x110>
+ 234:	30 e0       	ldi	r19, 0x00	; 0
+			delay(6);
+/******************************************************************************/
+//			SETARTER 3 KALI
+/******************************************************************************/
+			for(i=0;i<3;i++){
+				sbi(ddr_starter,bit_starter);					//starter output
+ 236:	ba 9a       	sbi	0x17, 2	; 23
+				sbi(port_starter,bit_starter);					//hidupkan starter
+ 238:	c2 9a       	sbi	0x18, 2	; 24
+ 23a:	20 e0       	ldi	r18, 0x00	; 0
+ 23c:	11 c0       	rjmp	.+34     	; 0x260 <main+0x164>
+ 23e:	fe 01       	movw	r30, r28
+ 240:	31 97       	sbiw	r30, 0x01	; 1
+ 242:	f1 f7       	brne	.-4      	; 0x240 <main+0x144>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 244:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 246:	d9 f7       	brne	.-10     	; 0x23e <main+0x142>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 248:	a8 95       	wdr
+ 24a:	88 e8       	ldi	r24, 0x88	; 136
+ 24c:	93 e1       	ldi	r25, 0x13	; 19
+ 24e:	fe 01       	movw	r30, r28
+ 250:	31 97       	sbiw	r30, 0x01	; 1
+ 252:	f1 f7       	brne	.-4      	; 0x250 <main+0x154>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 254:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 256:	d9 f7       	brne	.-10     	; 0x24e <main+0x152>
+	_delay_ms(500);
+	wdt_reset();	
+ 258:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 25a:	2f 5f       	subi	r18, 0xFF	; 255
+ 25c:	25 30       	cpi	r18, 0x05	; 5
+ 25e:	19 f0       	breq	.+6      	; 0x266 <main+0x16a>
+ 260:	88 e8       	ldi	r24, 0x88	; 136
+ 262:	93 e1       	ldi	r25, 0x13	; 19
+ 264:	ec cf       	rjmp	.-40     	; 0x23e <main+0x142>
+/******************************************************************************/
+			for(i=0;i<3;i++){
+				sbi(ddr_starter,bit_starter);					//starter output
+				sbi(port_starter,bit_starter);					//hidupkan starter
+				delay(5);
+				sbi(ddr_starter,bit_starter);					//starter output
+ 266:	ba 9a       	sbi	0x17, 2	; 23
+				cbi(port_starter,bit_starter);					//matikan starter
+ 268:	c2 98       	cbi	0x18, 2	; 24
+				sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 26a:	bb 9a       	sbi	0x17, 3	; 23
+				cbi(port_preheat,bit_preheat);					//preheat mati
+ 26c:	c3 98       	cbi	0x18, 3	; 24
+ 26e:	20 e0       	ldi	r18, 0x00	; 0
+ 270:	11 c0       	rjmp	.+34     	; 0x294 <main+0x198>
+ 272:	fe 01       	movw	r30, r28
+ 274:	31 97       	sbiw	r30, 0x01	; 1
+ 276:	f1 f7       	brne	.-4      	; 0x274 <main+0x178>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 278:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 27a:	d9 f7       	brne	.-10     	; 0x272 <main+0x176>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 27c:	a8 95       	wdr
+ 27e:	88 e8       	ldi	r24, 0x88	; 136
+ 280:	93 e1       	ldi	r25, 0x13	; 19
+ 282:	fe 01       	movw	r30, r28
+ 284:	31 97       	sbiw	r30, 0x01	; 1
+ 286:	f1 f7       	brne	.-4      	; 0x284 <main+0x188>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 288:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 28a:	d9 f7       	brne	.-10     	; 0x282 <main+0x186>
+	_delay_ms(500);
+	wdt_reset();	
+ 28c:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 28e:	2f 5f       	subi	r18, 0xFF	; 255
+ 290:	2a 30       	cpi	r18, 0x0A	; 10
+ 292:	19 f0       	breq	.+6      	; 0x29a <main+0x19e>
+ 294:	88 e8       	ldi	r24, 0x88	; 136
+ 296:	93 e1       	ldi	r25, 0x13	; 19
+ 298:	ec cf       	rjmp	.-40     	; 0x272 <main+0x176>
+	}
+	return a;
+}
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+ 29a:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+ 29c:	93 9a       	sbi	0x12, 3	; 18
+ 29e:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+ 2a0:	83 99       	sbic	0x10, 3	; 16
+ 2a2:	07 c0       	rjmp	.+14     	; 0x2b2 <main+0x1b6>
+ 2a4:	c8 01       	movw	r24, r16
+ 2a6:	01 97       	sbiw	r24, 0x01	; 1
+ 2a8:	f1 f7       	brne	.-4      	; 0x2a6 <main+0x1aa>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 2aa:	2f 5f       	subi	r18, 0xFF	; 255
+ 2ac:	2a 30       	cpi	r18, 0x0A	; 10
+ 2ae:	c1 f7       	brne	.-16     	; 0x2a0 <main+0x1a4>
+ 2b0:	10 c0       	rjmp	.+32     	; 0x2d2 <main+0x1d6>
+#define ddr_pln_out			DDRB
+#define bit_pln_out			PB0
+
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+ 2b2:	8a 98       	cbi	0x11, 2	; 17
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+ 2b4:	92 9a       	sbi	0x12, 2	; 18
+ 2b6:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_genset_in,bit_genset_in)){
+ 2b8:	82 99       	sbic	0x10, 2	; 16
+ 2ba:	07 c0       	rjmp	.+14     	; 0x2ca <main+0x1ce>
+ 2bc:	c8 01       	movw	r24, r16
+ 2be:	01 97       	sbiw	r24, 0x01	; 1
+ 2c0:	f1 f7       	brne	.-4      	; 0x2be <main+0x1c2>
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 2c2:	2f 5f       	subi	r18, 0xFF	; 255
+ 2c4:	2a 30       	cpi	r18, 0x0A	; 10
+ 2c6:	c1 f7       	brne	.-16     	; 0x2b8 <main+0x1bc>
+ 2c8:	04 c0       	rjmp	.+8      	; 0x2d2 <main+0x1d6>
+			sbi(port_acc,bit_acc);							//acc on
+			delay(6);
+/******************************************************************************/
+//			SETARTER 3 KALI
+/******************************************************************************/
+			for(i=0;i<3;i++){
+ 2ca:	3f 5f       	subi	r19, 0xFF	; 255
+ 2cc:	33 30       	cpi	r19, 0x03	; 3
+ 2ce:	09 f0       	breq	.+2      	; 0x2d2 <main+0x1d6>
+ 2d0:	b2 cf       	rjmp	.-156    	; 0x236 <main+0x13a>
+#define ddr_pln_out			DDRB
+#define bit_pln_out			PB0
+
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+ 2d2:	8a 98       	cbi	0x11, 2	; 17
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+ 2d4:	92 9a       	sbi	0x12, 2	; 18
+ 2d6:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_genset_in,bit_genset_in)){
+ 2d8:	82 99       	sbic	0x10, 2	; 16
+ 2da:	1c c0       	rjmp	.+56     	; 0x314 <main+0x218>
+ 2dc:	c8 01       	movw	r24, r16
+ 2de:	01 97       	sbiw	r24, 0x01	; 1
+ 2e0:	f1 f7       	brne	.-4      	; 0x2de <main+0x1e2>
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 2e2:	2f 5f       	subi	r18, 0xFF	; 255
+ 2e4:	2a 30       	cpi	r18, 0x0A	; 10
+ 2e6:	c1 f7       	brne	.-16     	; 0x2d8 <main+0x1dc>
+ 2e8:	20 e0       	ldi	r18, 0x00	; 0
+ 2ea:	11 c0       	rjmp	.+34     	; 0x30e <main+0x212>
+ 2ec:	fe 01       	movw	r30, r28
+ 2ee:	31 97       	sbiw	r30, 0x01	; 1
+ 2f0:	f1 f7       	brne	.-4      	; 0x2ee <main+0x1f2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2f2:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2f4:	d9 f7       	brne	.-10     	; 0x2ec <main+0x1f0>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 2f6:	a8 95       	wdr
+ 2f8:	88 e8       	ldi	r24, 0x88	; 136
+ 2fa:	93 e1       	ldi	r25, 0x13	; 19
+ 2fc:	fe 01       	movw	r30, r28
+ 2fe:	31 97       	sbiw	r30, 0x01	; 1
+ 300:	f1 f7       	brne	.-4      	; 0x2fe <main+0x202>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 302:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 304:	d9 f7       	brne	.-10     	; 0x2fc <main+0x200>
+	_delay_ms(500);
+	wdt_reset();	
+ 306:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 308:	2f 5f       	subi	r18, 0xFF	; 255
+ 30a:	24 30       	cpi	r18, 0x04	; 4
+ 30c:	19 f0       	breq	.+6      	; 0x314 <main+0x218>
+ 30e:	88 e8       	ldi	r24, 0x88	; 136
+ 310:	93 e1       	ldi	r25, 0x13	; 19
+ 312:	ec cf       	rjmp	.-40     	; 0x2ec <main+0x1f0>
+#define ddr_pln_out			DDRB
+#define bit_pln_out			PB0
+
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+ 314:	8a 98       	cbi	0x11, 2	; 17
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+ 316:	92 9a       	sbi	0x12, 2	; 18
+ 318:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_genset_in,bit_genset_in)){
+ 31a:	82 99       	sbic	0x10, 2	; 16
+ 31c:	24 c0       	rjmp	.+72     	; 0x366 <main+0x26a>
+ 31e:	c8 01       	movw	r24, r16
+ 320:	01 97       	sbiw	r24, 0x01	; 1
+ 322:	f1 f7       	brne	.-4      	; 0x320 <main+0x224>
+/******************************************************************************/
+unsigned char read_genset(void){
+	cbi(ddr_genset_in,bit_genset_in);	//set pin input 
+	sbi(port_genset_in,bit_genset_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 324:	2f 5f       	subi	r18, 0xFF	; 255
+ 326:	2a 30       	cpi	r18, 0x0A	; 10
+ 328:	c1 f7       	brne	.-16     	; 0x31a <main+0x21e>
+ 32a:	90 c0       	rjmp	.+288    	; 0x44c <main+0x350>
+ 32c:	88 e8       	ldi	r24, 0x88	; 136
+ 32e:	93 e1       	ldi	r25, 0x13	; 19
+ 330:	fe 01       	movw	r30, r28
+ 332:	31 97       	sbiw	r30, 0x01	; 1
+ 334:	f1 f7       	brne	.-4      	; 0x332 <main+0x236>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 336:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 338:	d9 f7       	brne	.-10     	; 0x330 <main+0x234>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 33a:	a8 95       	wdr
+ 33c:	88 e8       	ldi	r24, 0x88	; 136
+ 33e:	93 e1       	ldi	r25, 0x13	; 19
+ 340:	fe 01       	movw	r30, r28
+ 342:	31 97       	sbiw	r30, 0x01	; 1
+ 344:	f1 f7       	brne	.-4      	; 0x342 <main+0x246>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 346:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 348:	d9 f7       	brne	.-10     	; 0x340 <main+0x244>
+	_delay_ms(500);
+	wdt_reset();	
+ 34a:	a8 95       	wdr
+/******************************************************************************/
+			if(read_genset()) delay(4);//TUNDA SEBELUM KONTAKTOR GENSET ON
+				do{
+					if(read_genset()&&!sensor()){
+						delay(1);
+						sbi(ddr_starter,bit_starter);					//starter output
+ 34c:	ba 9a       	sbi	0x17, 2	; 23
+						cbi(port_starter,bit_starter);					//matikan starter
+ 34e:	c2 98       	cbi	0x18, 2	; 24
+						sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 350:	b8 9a       	sbi	0x17, 0	; 23
+						cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 352:	c0 98       	cbi	0x18, 0	; 24
+						sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 354:	b9 9a       	sbi	0x17, 1	; 23
+						sbi(port_genset_out,bit_genset_out);			//hidupkan genset	
+ 356:	c1 9a       	sbi	0x18, 1	; 24
+						sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 358:	bc 9a       	sbi	0x17, 4	; 23
+						cbi(port_buzer,bit_buzer);						//matikan out buzer
+ 35a:	c4 98       	cbi	0x18, 4	; 24
+						sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 35c:	bb 9a       	sbi	0x17, 3	; 23
+						cbi(port_preheat,bit_preheat);					//preheat mati
+ 35e:	c3 98       	cbi	0x18, 3	; 24
+						sbi(ddr_acc,bit_acc);							//acc set out
+ 360:	be 9a       	sbi	0x17, 6	; 23
+						sbi(port_acc,bit_acc);							//acc on
+ 362:	c6 9a       	sbi	0x18, 6	; 24
+ 364:	38 c0       	rjmp	.+112    	; 0x3d6 <main+0x2da>
+/******************************************************************************/
+//			GENSET HIDUP DI SINI :D
+/******************************************************************************/
+			if(read_genset()) delay(4);//TUNDA SEBELUM KONTAKTOR GENSET ON
+				do{
+					if(read_genset()&&!sensor()){
+ 366:	88 e8       	ldi	r24, 0x88	; 136
+ 368:	93 e1       	ldi	r25, 0x13	; 19
+ 36a:	fe 01       	movw	r30, r28
+ 36c:	31 97       	sbiw	r30, 0x01	; 1
+ 36e:	f1 f7       	brne	.-4      	; 0x36c <main+0x270>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 370:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 372:	d9 f7       	brne	.-10     	; 0x36a <main+0x26e>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 374:	a8 95       	wdr
+ 376:	88 e8       	ldi	r24, 0x88	; 136
+ 378:	93 e1       	ldi	r25, 0x13	; 19
+ 37a:	fe 01       	movw	r30, r28
+ 37c:	31 97       	sbiw	r30, 0x01	; 1
+ 37e:	f1 f7       	brne	.-4      	; 0x37c <main+0x280>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 380:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 382:	d9 f7       	brne	.-10     	; 0x37a <main+0x27e>
+	_delay_ms(500);
+	wdt_reset();	
+ 384:	a8 95       	wdr
+/******************************************************************************/
+//			ALARAM BUZER DI BAWAH SINI YA
+/******************************************************************************/
+					else{
+						delay(1);
+						sbi(ddr_starter,bit_starter);					//starter output
+ 386:	ba 9a       	sbi	0x17, 2	; 23
+						cbi(port_starter,bit_starter);					//matikan starter
+ 388:	c2 98       	cbi	0x18, 2	; 24
+						sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 38a:	b8 9a       	sbi	0x17, 0	; 23
+						cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 38c:	c0 98       	cbi	0x18, 0	; 24
+						sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 38e:	b9 9a       	sbi	0x17, 1	; 23
+						cbi(port_genset_out,bit_genset_out);			//matikan genset	
+ 390:	c1 98       	cbi	0x18, 1	; 24
+						sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 392:	bc 9a       	sbi	0x17, 4	; 23
+						sbi(port_buzer,bit_buzer);						//hidupkan buzer
+ 394:	c4 9a       	sbi	0x18, 4	; 24
+						sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 396:	bb 9a       	sbi	0x17, 3	; 23
+						cbi(port_preheat,bit_preheat);					//preheat mati
+ 398:	c3 98       	cbi	0x18, 3	; 24
+						sbi(ddr_acc,bit_acc);							//acc set out
+ 39a:	be 9a       	sbi	0x17, 6	; 23
+						cbi(port_acc,bit_acc);							//acc off
+ 39c:	c6 98       	cbi	0x18, 6	; 24
+ 39e:	88 e8       	ldi	r24, 0x88	; 136
+ 3a0:	93 e1       	ldi	r25, 0x13	; 19
+ 3a2:	fe 01       	movw	r30, r28
+ 3a4:	31 97       	sbiw	r30, 0x01	; 1
+ 3a6:	f1 f7       	brne	.-4      	; 0x3a4 <main+0x2a8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 3a8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 3aa:	d9 f7       	brne	.-10     	; 0x3a2 <main+0x2a6>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 3ac:	a8 95       	wdr
+ 3ae:	88 e8       	ldi	r24, 0x88	; 136
+ 3b0:	93 e1       	ldi	r25, 0x13	; 19
+ 3b2:	fe 01       	movw	r30, r28
+ 3b4:	31 97       	sbiw	r30, 0x01	; 1
+ 3b6:	f1 f7       	brne	.-4      	; 0x3b4 <main+0x2b8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 3b8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 3ba:	d9 f7       	brne	.-10     	; 0x3b2 <main+0x2b6>
+	_delay_ms(500);
+	wdt_reset();	
+ 3bc:	a8 95       	wdr
+						sbi(ddr_preheat,bit_preheat);					//set preheat output
+						cbi(port_preheat,bit_preheat);					//preheat mati
+						sbi(ddr_acc,bit_acc);							//acc set out
+						cbi(port_acc,bit_acc);							//acc off
+						delay(1);
+						sbi(ddr_starter,bit_starter);					//starter output
+ 3be:	ba 9a       	sbi	0x17, 2	; 23
+						cbi(port_starter,bit_starter);					//matikan starter
+ 3c0:	c2 98       	cbi	0x18, 2	; 24
+						sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 3c2:	b8 9a       	sbi	0x17, 0	; 23
+						cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 3c4:	c0 98       	cbi	0x18, 0	; 24
+						sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 3c6:	b9 9a       	sbi	0x17, 1	; 23
+						cbi(port_genset_out,bit_genset_out);			//matikan genset	
+ 3c8:	c1 98       	cbi	0x18, 1	; 24
+						sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 3ca:	bc 9a       	sbi	0x17, 4	; 23
+						cbi(port_buzer,bit_buzer);						//matikan out buzer	
+ 3cc:	c4 98       	cbi	0x18, 4	; 24
+						sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 3ce:	bb 9a       	sbi	0x17, 3	; 23
+						cbi(port_preheat,bit_preheat);					//preheat mati		
+ 3d0:	c3 98       	cbi	0x18, 3	; 24
+						sbi(ddr_acc,bit_acc);							//acc set out
+ 3d2:	be 9a       	sbi	0x17, 6	; 23
+						cbi(port_acc,bit_acc);							//acc off
+ 3d4:	c6 98       	cbi	0x18, 6	; 24
+	}
+	return a;
+}
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+ 3d6:	8b 98       	cbi	0x11, 3	; 17
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+ 3d8:	93 9a       	sbi	0x12, 3	; 18
+ 3da:	20 e0       	ldi	r18, 0x00	; 0
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+		if(bit_is_set(pin_pln_in,bit_pln_in)){
+ 3dc:	83 99       	sbic	0x10, 3	; 16
+ 3de:	9a cf       	rjmp	.-204    	; 0x314 <main+0x218>
+ 3e0:	c8 01       	movw	r24, r16
+ 3e2:	01 97       	sbiw	r24, 0x01	; 1
+ 3e4:	f1 f7       	brne	.-4      	; 0x3e2 <main+0x2e6>
+/******************************************************************************/
+unsigned char read_pln(void){
+	cbi(ddr_pln_in,bit_pln_in);		//set pin input 
+	sbi(port_pln_in,bit_pln_in);	//pull up input
+	unsigned char i,a;
+	for(i=0;i<10;i++){
+ 3e6:	2f 5f       	subi	r18, 0xFF	; 255
+ 3e8:	2a 30       	cpi	r18, 0x0A	; 10
+ 3ea:	c1 f7       	brne	.-16     	; 0x3dc <main+0x2e0>
+ 3ec:	34 c0       	rjmp	.+104    	; 0x456 <main+0x35a>
+				wdt_reset();
+			}
+/******************************************************************************/
+//			PLN SUDAH HIDUP DI SINI :D
+/******************************************************************************/
+	sbi(ddr_starter,bit_starter);					//starter output
+ 3ee:	ba 9a       	sbi	0x17, 2	; 23
+	cbi(port_starter,bit_starter);					//matikan starter	
+ 3f0:	c2 98       	cbi	0x18, 2	; 24
+	sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 3f2:	b8 9a       	sbi	0x17, 0	; 23
+	cbi(port_pln_out,bit_pln_out);					//matikan out pln
+ 3f4:	c0 98       	cbi	0x18, 0	; 24
+	sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 3f6:	b9 9a       	sbi	0x17, 1	; 23
+	cbi(port_genset_out,bit_genset_out);			//matikan genset	
+ 3f8:	c1 98       	cbi	0x18, 1	; 24
+	sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 3fa:	bc 9a       	sbi	0x17, 4	; 23
+	cbi(port_buzer,bit_buzer);						//matikan out buzer
+ 3fc:	c4 98       	cbi	0x18, 4	; 24
+	sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 3fe:	bb 9a       	sbi	0x17, 3	; 23
+	cbi(port_preheat,bit_preheat);					//preheat mati
+ 400:	c3 98       	cbi	0x18, 3	; 24
+ 402:	20 e0       	ldi	r18, 0x00	; 0
+ 404:	12 c0       	rjmp	.+36     	; 0x42a <main+0x32e>
+ 406:	fe 01       	movw	r30, r28
+ 408:	31 97       	sbiw	r30, 0x01	; 1
+ 40a:	f1 f7       	brne	.-4      	; 0x408 <main+0x30c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 40c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 40e:	d9 f7       	brne	.-10     	; 0x406 <main+0x30a>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 410:	a8 95       	wdr
+ 412:	88 e8       	ldi	r24, 0x88	; 136
+ 414:	93 e1       	ldi	r25, 0x13	; 19
+ 416:	fe 01       	movw	r30, r28
+ 418:	31 97       	sbiw	r30, 0x01	; 1
+ 41a:	f1 f7       	brne	.-4      	; 0x418 <main+0x31c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 41c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 41e:	d9 f7       	brne	.-10     	; 0x416 <main+0x31a>
+	_delay_ms(500);
+	wdt_reset();	
+ 420:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 422:	2f 5f       	subi	r18, 0xFF	; 255
+ 424:	2a 30       	cpi	r18, 0x0A	; 10
+ 426:	09 f4       	brne	.+2      	; 0x42a <main+0x32e>
+ 428:	ca ce       	rjmp	.-620    	; 0x1be <main+0xc2>
+ 42a:	88 e8       	ldi	r24, 0x88	; 136
+ 42c:	93 e1       	ldi	r25, 0x13	; 19
+ 42e:	eb cf       	rjmp	.-42     	; 0x406 <main+0x30a>
+	_delay_ms(100);
+	while(1){
+		acc_off=60;
+		while(read_pln()){
+			while(read_pln()){		//pln hidup//
+				sbi(ddr_starter,bit_starter);					//starter output
+ 430:	ba 9a       	sbi	0x17, 2	; 23
+				cbi(port_starter,bit_starter);					//matikan starter		
+ 432:	c2 98       	cbi	0x18, 2	; 24
+				sbi(ddr_pln_out,bit_pln_out);					//out pln set out
+ 434:	b8 9a       	sbi	0x17, 0	; 23
+				sbi(port_pln_out,bit_pln_out);					//hidupkan out pln
+ 436:	c0 9a       	sbi	0x18, 0	; 24
+				sbi(ddr_genset_out,bit_genset_out);				//output genset set out
+ 438:	b9 9a       	sbi	0x17, 1	; 23
+				cbi(port_genset_out,bit_genset_out);			//matikan genset	
+ 43a:	c1 98       	cbi	0x18, 1	; 24
+				sbi(ddr_buzer,bit_buzer);						//out buzer set out
+ 43c:	bc 9a       	sbi	0x17, 4	; 23
+				cbi(port_buzer,bit_buzer);						//matikan out buzer
+ 43e:	c4 98       	cbi	0x18, 4	; 24
+				sbi(ddr_preheat,bit_preheat);					//set preheat output
+ 440:	bb 9a       	sbi	0x17, 3	; 23
+				cbi(port_preheat,bit_preheat);					//preheat mati
+ 442:	c3 98       	cbi	0x18, 3	; 24
+				sbi(ddr_acc,bit_acc);							//acc set out
+ 444:	be 9a       	sbi	0x17, 6	; 23
+ 446:	88 e8       	ldi	r24, 0x88	; 136
+ 448:	93 e1       	ldi	r25, 0x13	; 19
+ 44a:	84 ce       	rjmp	.-760    	; 0x154 <main+0x58>
+/******************************************************************************/
+//			GENSET HIDUP DI SINI :D
+/******************************************************************************/
+			if(read_genset()) delay(4);//TUNDA SEBELUM KONTAKTOR GENSET ON
+				do{
+					if(read_genset()&&!sensor()){
+ 44c:	17 de       	rcall	.-978    	; 0x7c <sensor>
+ 44e:	88 23       	and	r24, r24
+ 450:	09 f0       	breq	.+2      	; 0x454 <main+0x358>
+ 452:	89 cf       	rjmp	.-238    	; 0x366 <main+0x26a>
+ 454:	6b cf       	rjmp	.-298    	; 0x32c <main+0x230>
+						cbi(port_preheat,bit_preheat);					//preheat mati		
+						sbi(ddr_acc,bit_acc);							//acc set out
+						cbi(port_acc,bit_acc);							//acc off
+						}//genset mati
+				}while(!read_pln());
+				wdt_reset();
+ 456:	a8 95       	wdr
+ 458:	ca cf       	rjmp	.-108    	; 0x3ee <main+0x2f2>
+
+0000045a <_exit>:
+ 45a:	f8 94       	cli
+
+0000045c <__stop_program>:
+ 45c:	ff cf       	rjmp	.-2      	; 0x45c <__stop_program>

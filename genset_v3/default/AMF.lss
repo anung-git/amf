@@ -1,0 +1,1093 @@
+
+AMF.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000003c2  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  00000416  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000005c  00000000  00000000  00000436  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000c74  00000000  00000000  00000492  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000161  00000000  00000000  00001106  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000893  00000000  00000000  00001267  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000070  00000000  00000000  00001afc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000f6  00000000  00000000  00001b6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    000007ae  00000000  00000000  00001c62  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000120  00000000  00000000  00002410  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2a c0       	rjmp	.+84     	; 0x58 <__bad_interrupt>
+   4:	29 c0       	rjmp	.+82     	; 0x58 <__bad_interrupt>
+   6:	28 c0       	rjmp	.+80     	; 0x58 <__bad_interrupt>
+   8:	27 c0       	rjmp	.+78     	; 0x58 <__bad_interrupt>
+   a:	26 c0       	rjmp	.+76     	; 0x58 <__bad_interrupt>
+   c:	25 c0       	rjmp	.+74     	; 0x58 <__bad_interrupt>
+   e:	24 c0       	rjmp	.+72     	; 0x58 <__bad_interrupt>
+  10:	23 c0       	rjmp	.+70     	; 0x58 <__bad_interrupt>
+  12:	22 c0       	rjmp	.+68     	; 0x58 <__bad_interrupt>
+  14:	21 c0       	rjmp	.+66     	; 0x58 <__bad_interrupt>
+  16:	20 c0       	rjmp	.+64     	; 0x58 <__bad_interrupt>
+  18:	1f c0       	rjmp	.+62     	; 0x58 <__bad_interrupt>
+  1a:	1e c0       	rjmp	.+60     	; 0x58 <__bad_interrupt>
+  1c:	1d c0       	rjmp	.+58     	; 0x58 <__bad_interrupt>
+  1e:	1c c0       	rjmp	.+56     	; 0x58 <__bad_interrupt>
+  20:	1b c0       	rjmp	.+54     	; 0x58 <__bad_interrupt>
+  22:	1a c0       	rjmp	.+52     	; 0x58 <__bad_interrupt>
+  24:	19 c0       	rjmp	.+50     	; 0x58 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf ed       	ldi	r28, 0xDF	; 223
+  2c:	cd bf       	out	0x3d, r28	; 61
+
+0000002e <__do_copy_data>:
+  2e:	10 e0       	ldi	r17, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	e2 ec       	ldi	r30, 0xC2	; 194
+  36:	f3 e0       	ldi	r31, 0x03	; 3
+  38:	02 c0       	rjmp	.+4      	; 0x3e <.do_copy_data_start>
+
+0000003a <.do_copy_data_loop>:
+  3a:	05 90       	lpm	r0, Z+
+  3c:	0d 92       	st	X+, r0
+
+0000003e <.do_copy_data_start>:
+  3e:	a0 36       	cpi	r26, 0x60	; 96
+  40:	b1 07       	cpc	r27, r17
+  42:	d9 f7       	brne	.-10     	; 0x3a <.do_copy_data_loop>
+
+00000044 <__do_clear_bss>:
+  44:	10 e0       	ldi	r17, 0x00	; 0
+  46:	a0 e6       	ldi	r26, 0x60	; 96
+  48:	b0 e0       	ldi	r27, 0x00	; 0
+  4a:	01 c0       	rjmp	.+2      	; 0x4e <.do_clear_bss_start>
+
+0000004c <.do_clear_bss_loop>:
+  4c:	1d 92       	st	X+, r1
+
+0000004e <.do_clear_bss_start>:
+  4e:	a0 36       	cpi	r26, 0x60	; 96
+  50:	b1 07       	cpc	r27, r17
+  52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
+  54:	71 d0       	rcall	.+226    	; 0x138 <main>
+  56:	b3 c1       	rjmp	.+870    	; 0x3be <_exit>
+
+00000058 <__bad_interrupt>:
+  58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
+
+0000005a <delay_10ms>:
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  5a:	80 e4       	ldi	r24, 0x40	; 64
+  5c:	9c e9       	ldi	r25, 0x9C	; 156
+  5e:	01 97       	sbiw	r24, 0x01	; 1
+  60:	f1 f7       	brne	.-4      	; 0x5e <delay_10ms+0x4>
+#include <compat/deprecated.h>
+#include "mymacro.h"
+
+void delay_10ms(void){
+_delay_ms(20);
+}
+  62:	08 95       	ret
+
+00000064 <read_genset>:
+/******************************************************************************/
+unsigned char read_genset(void){
+	unsigned char a=0xff;
+	x3_in();
+  64:	8a 98       	cbi	0x11, 2	; 17
+	x3_hi();
+  66:	92 9a       	sbi	0x12, 2	; 18
+  68:	80 e4       	ldi	r24, 0x40	; 64
+  6a:	9c e9       	ldi	r25, 0x9C	; 156
+  6c:	01 97       	sbiw	r24, 0x01	; 1
+  6e:	f1 f7       	brne	.-4      	; 0x6c <read_genset+0x8>
+	delay_10ms();
+	if(r_x3())a=0;
+  70:	82 9b       	sbis	0x10, 2	; 16
+  72:	02 c0       	rjmp	.+4      	; 0x78 <read_genset+0x14>
+  74:	80 e0       	ldi	r24, 0x00	; 0
+  76:	01 c0       	rjmp	.+2      	; 0x7a <read_genset+0x16>
+  78:	8f ef       	ldi	r24, 0xFF	; 255
+  7a:	e0 e4       	ldi	r30, 0x40	; 64
+  7c:	fc e9       	ldi	r31, 0x9C	; 156
+  7e:	31 97       	sbiw	r30, 0x01	; 1
+  80:	f1 f7       	brne	.-4      	; 0x7e <read_genset+0x1a>
+	delay_10ms();
+	if(r_x3())a=0;
+  82:	82 99       	sbic	0x10, 2	; 16
+  84:	80 e0       	ldi	r24, 0x00	; 0
+  86:	e0 e4       	ldi	r30, 0x40	; 64
+  88:	fc e9       	ldi	r31, 0x9C	; 156
+  8a:	31 97       	sbiw	r30, 0x01	; 1
+  8c:	f1 f7       	brne	.-4      	; 0x8a <read_genset+0x26>
+	delay_10ms();
+	if(r_x3())a=0;
+  8e:	82 99       	sbic	0x10, 2	; 16
+  90:	80 e0       	ldi	r24, 0x00	; 0
+	return a;
+}
+  92:	08 95       	ret
+
+00000094 <sensor>:
+/******************************************************************************/
+unsigned char sensor(void){//return 1 jika sensor di tekan
+	unsigned char a=0xff;
+	x1_in();
+  94:	88 98       	cbi	0x11, 0	; 17
+	x2_in();
+  96:	89 98       	cbi	0x11, 1	; 17
+	x1_hi();
+  98:	90 9a       	sbi	0x12, 0	; 18
+	x2_hi();
+  9a:	91 9a       	sbi	0x12, 1	; 18
+  9c:	80 e4       	ldi	r24, 0x40	; 64
+  9e:	9c e9       	ldi	r25, 0x9C	; 156
+  a0:	01 97       	sbiw	r24, 0x01	; 1
+  a2:	f1 f7       	brne	.-4      	; 0xa0 <sensor+0xc>
+	delay_10ms();
+	if(r_x1()&&r_x2())a=0;
+  a4:	80 9b       	sbis	0x10, 0	; 16
+  a6:	04 c0       	rjmp	.+8      	; 0xb0 <sensor+0x1c>
+  a8:	81 9b       	sbis	0x10, 1	; 16
+  aa:	02 c0       	rjmp	.+4      	; 0xb0 <sensor+0x1c>
+  ac:	80 e0       	ldi	r24, 0x00	; 0
+  ae:	01 c0       	rjmp	.+2      	; 0xb2 <sensor+0x1e>
+  b0:	8f ef       	ldi	r24, 0xFF	; 255
+  b2:	e0 e4       	ldi	r30, 0x40	; 64
+  b4:	fc e9       	ldi	r31, 0x9C	; 156
+  b6:	31 97       	sbiw	r30, 0x01	; 1
+  b8:	f1 f7       	brne	.-4      	; 0xb6 <sensor+0x22>
+	delay_10ms();
+	if(r_x1()&&r_x2())a=0;
+  ba:	80 9b       	sbis	0x10, 0	; 16
+  bc:	02 c0       	rjmp	.+4      	; 0xc2 <sensor+0x2e>
+  be:	81 99       	sbic	0x10, 1	; 16
+  c0:	80 e0       	ldi	r24, 0x00	; 0
+  c2:	e0 e4       	ldi	r30, 0x40	; 64
+  c4:	fc e9       	ldi	r31, 0x9C	; 156
+  c6:	31 97       	sbiw	r30, 0x01	; 1
+  c8:	f1 f7       	brne	.-4      	; 0xc6 <sensor+0x32>
+	delay_10ms();
+	if(r_x1()&&r_x2())a=0;
+  ca:	80 9b       	sbis	0x10, 0	; 16
+  cc:	02 c0       	rjmp	.+4      	; 0xd2 <sensor+0x3e>
+  ce:	81 99       	sbic	0x10, 1	; 16
+  d0:	80 e0       	ldi	r24, 0x00	; 0
+	return a;
+}
+  d2:	08 95       	ret
+
+000000d4 <read_pln>:
+/******************************************************************************/
+unsigned char read_pln(void){
+	unsigned char a=0xff;
+	x4_in();
+  d4:	8b 98       	cbi	0x11, 3	; 17
+	x4_hi();
+  d6:	93 9a       	sbi	0x12, 3	; 18
+  d8:	80 e4       	ldi	r24, 0x40	; 64
+  da:	9c e9       	ldi	r25, 0x9C	; 156
+  dc:	01 97       	sbiw	r24, 0x01	; 1
+  de:	f1 f7       	brne	.-4      	; 0xdc <read_pln+0x8>
+	delay_10ms();
+	if(r_x4())a=0;
+  e0:	83 9b       	sbis	0x10, 3	; 16
+  e2:	02 c0       	rjmp	.+4      	; 0xe8 <__stack+0x9>
+  e4:	80 e0       	ldi	r24, 0x00	; 0
+  e6:	01 c0       	rjmp	.+2      	; 0xea <__stack+0xb>
+  e8:	8f ef       	ldi	r24, 0xFF	; 255
+  ea:	e0 e4       	ldi	r30, 0x40	; 64
+  ec:	fc e9       	ldi	r31, 0x9C	; 156
+  ee:	31 97       	sbiw	r30, 0x01	; 1
+  f0:	f1 f7       	brne	.-4      	; 0xee <__stack+0xf>
+	delay_10ms();
+	if(r_x4())a=0;
+  f2:	83 99       	sbic	0x10, 3	; 16
+  f4:	80 e0       	ldi	r24, 0x00	; 0
+  f6:	e0 e4       	ldi	r30, 0x40	; 64
+  f8:	fc e9       	ldi	r31, 0x9C	; 156
+  fa:	31 97       	sbiw	r30, 0x01	; 1
+  fc:	f1 f7       	brne	.-4      	; 0xfa <__stack+0x1b>
+	delay_10ms();
+	if(r_x4())a=0;
+  fe:	83 99       	sbic	0x10, 3	; 16
+ 100:	80 e0       	ldi	r24, 0x00	; 0
+	return a;
+}
+ 102:	08 95       	ret
+
+00000104 <delay>:
+/******************************************************************************/
+void delay(unsigned char wait){
+ 104:	90 e0       	ldi	r25, 0x00	; 0
+ 106:	48 ec       	ldi	r20, 0xC8	; 200
+ 108:	50 e0       	ldi	r21, 0x00	; 0
+ 10a:	13 c0       	rjmp	.+38     	; 0x132 <delay+0x2e>
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 10c:	28 e8       	ldi	r18, 0x88	; 136
+ 10e:	33 e1       	ldi	r19, 0x13	; 19
+ 110:	fa 01       	movw	r30, r20
+ 112:	31 97       	sbiw	r30, 0x01	; 1
+ 114:	f1 f7       	brne	.-4      	; 0x112 <delay+0xe>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 116:	21 50       	subi	r18, 0x01	; 1
+ 118:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 11a:	d1 f7       	brne	.-12     	; 0x110 <delay+0xc>
+	_delay_ms(500);
+	wdt_reset();
+ 11c:	a8 95       	wdr
+ 11e:	28 e8       	ldi	r18, 0x88	; 136
+ 120:	33 e1       	ldi	r19, 0x13	; 19
+ 122:	fa 01       	movw	r30, r20
+ 124:	31 97       	sbiw	r30, 0x01	; 1
+ 126:	f1 f7       	brne	.-4      	; 0x124 <delay+0x20>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 128:	21 50       	subi	r18, 0x01	; 1
+ 12a:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 12c:	d1 f7       	brne	.-12     	; 0x122 <delay+0x1e>
+	_delay_ms(500);
+	wdt_reset();	
+ 12e:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 130:	9f 5f       	subi	r25, 0xFF	; 255
+ 132:	98 17       	cp	r25, r24
+ 134:	58 f3       	brcs	.-42     	; 0x10c <delay+0x8>
+	_delay_ms(500);
+	wdt_reset();
+	_delay_ms(500);
+	wdt_reset();	
+	}
+}
+ 136:	08 95       	ret
+
+00000138 <main>:
+y5 = pln
+y6 = buzer
+1118 byte
+*/
+/******************************************************************************/
+int main(void){
+ 138:	ef 92       	push	r14
+ 13a:	ff 92       	push	r15
+ 13c:	1f 93       	push	r17
+ 13e:	cf 93       	push	r28
+ 140:	df 93       	push	r29
+	unsigned char i;
+	unsigned char acc_off;
+	
+	y1_lo();
+ 142:	c6 98       	cbi	0x18, 6	; 24
+	y2_lo();
+ 144:	c3 98       	cbi	0x18, 3	; 24
+	y3_lo();
+ 146:	c2 98       	cbi	0x18, 2	; 24
+	y4_lo();
+ 148:	c1 98       	cbi	0x18, 1	; 24
+	y5_lo();
+ 14a:	c0 98       	cbi	0x18, 0	; 24
+	y6_lo();
+ 14c:	c4 98       	cbi	0x18, 4	; 24
+	x1_hi();
+ 14e:	90 9a       	sbi	0x12, 0	; 18
+	x2_hi();
+ 150:	91 9a       	sbi	0x12, 1	; 18
+	x3_hi();
+ 152:	92 9a       	sbi	0x12, 2	; 18
+	x4_hi();
+ 154:	93 9a       	sbi	0x12, 3	; 18
+
+	x1_in();
+ 156:	88 98       	cbi	0x11, 0	; 17
+	x2_in();
+ 158:	89 98       	cbi	0x11, 1	; 17
+	x3_in();
+ 15a:	8a 98       	cbi	0x11, 2	; 17
+	x4_in();
+ 15c:	8b 98       	cbi	0x11, 3	; 17
+	y1_out();
+ 15e:	be 9a       	sbi	0x17, 6	; 23
+	y2_out();
+ 160:	bb 9a       	sbi	0x17, 3	; 23
+	y3_out();
+ 162:	ba 9a       	sbi	0x17, 2	; 23
+	y4_out();
+ 164:	b9 9a       	sbi	0x17, 1	; 23
+	y5_out();
+ 166:	b8 9a       	sbi	0x17, 0	; 23
+	y6_out();
+ 168:	bc 9a       	sbi	0x17, 4	; 23
+	wdt_enable(WDTO_2S);
+ 16a:	2f e0       	ldi	r18, 0x0F	; 15
+ 16c:	88 e1       	ldi	r24, 0x18	; 24
+ 16e:	90 e0       	ldi	r25, 0x00	; 0
+ 170:	0f b6       	in	r0, 0x3f	; 63
+ 172:	f8 94       	cli
+ 174:	a8 95       	wdr
+ 176:	81 bd       	out	0x21, r24	; 33
+ 178:	0f be       	out	0x3f, r0	; 63
+ 17a:	21 bd       	out	0x21, r18	; 33
+ 17c:	88 ee       	ldi	r24, 0xE8	; 232
+ 17e:	93 e0       	ldi	r25, 0x03	; 3
+ 180:	28 ec       	ldi	r18, 0xC8	; 200
+ 182:	30 e0       	ldi	r19, 0x00	; 0
+ 184:	f9 01       	movw	r30, r18
+ 186:	31 97       	sbiw	r30, 0x01	; 1
+ 188:	f1 f7       	brne	.-4      	; 0x186 <main+0x4e>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 18a:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 18c:	d9 f7       	brne	.-10     	; 0x184 <main+0x4c>
+ 18e:	1e e1       	ldi	r17, 0x1E	; 30
+ 190:	80 e4       	ldi	r24, 0x40	; 64
+ 192:	e8 2e       	mov	r14, r24
+ 194:	8c e9       	ldi	r24, 0x9C	; 156
+ 196:	f8 2e       	mov	r15, r24
+	_delay_ms(100);
+	while(1){
+		acc_off=30;
+		while(read_pln()){
+			while(read_pln()){		//pln hidup//
+				y1_out();
+ 198:	c8 ec       	ldi	r28, 0xC8	; 200
+ 19a:	d0 e0       	ldi	r29, 0x00	; 0
+ 19c:	3d c0       	rjmp	.+122    	; 0x218 <main+0xe0>
+ 19e:	be 9a       	sbi	0x17, 6	; 23
+				y2_out();
+ 1a0:	bb 9a       	sbi	0x17, 3	; 23
+				y3_out();
+ 1a2:	ba 9a       	sbi	0x17, 2	; 23
+				y4_out();
+ 1a4:	b9 9a       	sbi	0x17, 1	; 23
+				y5_out();
+ 1a6:	b8 9a       	sbi	0x17, 0	; 23
+				y6_out();
+ 1a8:	bc 9a       	sbi	0x17, 4	; 23
+ 1aa:	c7 01       	movw	r24, r14
+ 1ac:	01 97       	sbiw	r24, 0x01	; 1
+ 1ae:	f1 f7       	brne	.-4      	; 0x1ac <main+0x74>
+				delay_10ms();
+				y2_lo();
+ 1b0:	c3 98       	cbi	0x18, 3	; 24
+				y3_lo();
+ 1b2:	c2 98       	cbi	0x18, 2	; 24
+				y4_lo();
+ 1b4:	c1 98       	cbi	0x18, 1	; 24
+				y5_hi();//pln on
+ 1b6:	c0 9a       	sbi	0x18, 0	; 24
+				y6_lo();
+ 1b8:	c4 98       	cbi	0x18, 4	; 24
+ 1ba:	88 e8       	ldi	r24, 0x88	; 136
+ 1bc:	93 e1       	ldi	r25, 0x13	; 19
+ 1be:	fe 01       	movw	r30, r28
+ 1c0:	31 97       	sbiw	r30, 0x01	; 1
+ 1c2:	f1 f7       	brne	.-4      	; 0x1c0 <main+0x88>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1c4:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1c6:	d9 f7       	brne	.-10     	; 0x1be <main+0x86>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 1c8:	a8 95       	wdr
+ 1ca:	88 e8       	ldi	r24, 0x88	; 136
+ 1cc:	93 e1       	ldi	r25, 0x13	; 19
+ 1ce:	fe 01       	movw	r30, r28
+ 1d0:	31 97       	sbiw	r30, 0x01	; 1
+ 1d2:	f1 f7       	brne	.-4      	; 0x1d0 <main+0x98>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1d4:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1d6:	d9 f7       	brne	.-10     	; 0x1ce <main+0x96>
+	_delay_ms(500);
+	wdt_reset();	
+ 1d8:	a8 95       	wdr
+				y3_lo();
+				y4_lo();
+				y5_hi();//pln on
+				y6_lo();
+				delay(1);
+				if(acc_off>0)acc_off--;
+ 1da:	11 23       	and	r17, r17
+ 1dc:	11 f0       	breq	.+4      	; 0x1e2 <main+0xaa>
+ 1de:	11 50       	subi	r17, 0x01	; 1
+ 1e0:	01 c0       	rjmp	.+2      	; 0x1e4 <main+0xac>
+				else y1_lo();//acc off			
+ 1e2:	c6 98       	cbi	0x18, 6	; 24
+	wdt_enable(WDTO_2S);
+	_delay_ms(100);
+	while(1){
+		acc_off=30;
+		while(read_pln()){
+			while(read_pln()){		//pln hidup//
+ 1e4:	77 df       	rcall	.-274    	; 0xd4 <read_pln>
+ 1e6:	88 23       	and	r24, r24
+ 1e8:	d1 f6       	brne	.-76     	; 0x19e <main+0x66>
+ 1ea:	20 e0       	ldi	r18, 0x00	; 0
+ 1ec:	11 c0       	rjmp	.+34     	; 0x210 <main+0xd8>
+ 1ee:	fe 01       	movw	r30, r28
+ 1f0:	31 97       	sbiw	r30, 0x01	; 1
+ 1f2:	f1 f7       	brne	.-4      	; 0x1f0 <main+0xb8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1f4:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1f6:	d9 f7       	brne	.-10     	; 0x1ee <main+0xb6>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 1f8:	a8 95       	wdr
+ 1fa:	88 e8       	ldi	r24, 0x88	; 136
+ 1fc:	93 e1       	ldi	r25, 0x13	; 19
+ 1fe:	fe 01       	movw	r30, r28
+ 200:	31 97       	sbiw	r30, 0x01	; 1
+ 202:	f1 f7       	brne	.-4      	; 0x200 <main+0xc8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 204:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 206:	d9 f7       	brne	.-10     	; 0x1fe <main+0xc6>
+	_delay_ms(500);
+	wdt_reset();	
+ 208:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 20a:	2f 5f       	subi	r18, 0xFF	; 255
+ 20c:	25 30       	cpi	r18, 0x05	; 5
+ 20e:	21 f0       	breq	.+8      	; 0x218 <main+0xe0>
+ 210:	88 e8       	ldi	r24, 0x88	; 136
+ 212:	93 e1       	ldi	r25, 0x13	; 19
+ 214:	ec cf       	rjmp	.-40     	; 0x1ee <main+0xb6>
+ 216:	1e e1       	ldi	r17, 0x1E	; 30
+	y6_out();
+	wdt_enable(WDTO_2S);
+	_delay_ms(100);
+	while(1){
+		acc_off=30;
+		while(read_pln()){
+ 218:	5d df       	rcall	.-326    	; 0xd4 <read_pln>
+ 21a:	88 23       	and	r24, r24
+ 21c:	19 f7       	brne	.-58     	; 0x1e4 <main+0xac>
+			delay(5);
+		};
+/******************************************************************************/
+//	hidupkan acc dan preheat
+/******************************************************************************/
+		if(!read_pln()){			//pln mati
+ 21e:	5a df       	rcall	.-332    	; 0xd4 <read_pln>
+ 220:	88 23       	and	r24, r24
+ 222:	09 f0       	breq	.+2      	; 0x226 <main+0xee>
+ 224:	b0 c0       	rjmp	.+352    	; 0x386 <main+0x24e>
+			y1_hi();//acc on
+ 226:	c6 9a       	sbi	0x18, 6	; 24
+ 228:	10 e0       	ldi	r17, 0x00	; 0
+/******************************************************************************/
+//			SETARTER 3 KALI
+/******************************************************************************/
+			for(i=0;i<3;i++){
+				y2_hi();//pre heat on
+ 22a:	c3 9a       	sbi	0x18, 3	; 24
+				y3_lo();
+ 22c:	c2 98       	cbi	0x18, 2	; 24
+				y4_lo();
+ 22e:	c1 98       	cbi	0x18, 1	; 24
+				y5_lo();
+ 230:	c0 98       	cbi	0x18, 0	; 24
+				y6_lo();
+ 232:	c4 98       	cbi	0x18, 4	; 24
+ 234:	20 e0       	ldi	r18, 0x00	; 0
+ 236:	11 c0       	rjmp	.+34     	; 0x25a <main+0x122>
+ 238:	fe 01       	movw	r30, r28
+ 23a:	31 97       	sbiw	r30, 0x01	; 1
+ 23c:	f1 f7       	brne	.-4      	; 0x23a <main+0x102>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 23e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 240:	d9 f7       	brne	.-10     	; 0x238 <main+0x100>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 242:	a8 95       	wdr
+ 244:	88 e8       	ldi	r24, 0x88	; 136
+ 246:	93 e1       	ldi	r25, 0x13	; 19
+ 248:	fe 01       	movw	r30, r28
+ 24a:	31 97       	sbiw	r30, 0x01	; 1
+ 24c:	f1 f7       	brne	.-4      	; 0x24a <main+0x112>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 24e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 250:	d9 f7       	brne	.-10     	; 0x248 <main+0x110>
+	_delay_ms(500);
+	wdt_reset();	
+ 252:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 254:	2f 5f       	subi	r18, 0xFF	; 255
+ 256:	24 30       	cpi	r18, 0x04	; 4
+ 258:	19 f0       	breq	.+6      	; 0x260 <main+0x128>
+ 25a:	88 e8       	ldi	r24, 0x88	; 136
+ 25c:	93 e1       	ldi	r25, 0x13	; 19
+ 25e:	ec cf       	rjmp	.-40     	; 0x238 <main+0x100>
+				y3_lo();
+				y4_lo();
+				y5_lo();
+				y6_lo();
+				delay(4);
+				y3_hi();//starter on
+ 260:	c2 9a       	sbi	0x18, 2	; 24
+ 262:	20 e0       	ldi	r18, 0x00	; 0
+ 264:	11 c0       	rjmp	.+34     	; 0x288 <main+0x150>
+ 266:	fe 01       	movw	r30, r28
+ 268:	31 97       	sbiw	r30, 0x01	; 1
+ 26a:	f1 f7       	brne	.-4      	; 0x268 <main+0x130>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 26c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 26e:	d9 f7       	brne	.-10     	; 0x266 <main+0x12e>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 270:	a8 95       	wdr
+ 272:	88 e8       	ldi	r24, 0x88	; 136
+ 274:	93 e1       	ldi	r25, 0x13	; 19
+ 276:	fe 01       	movw	r30, r28
+ 278:	31 97       	sbiw	r30, 0x01	; 1
+ 27a:	f1 f7       	brne	.-4      	; 0x278 <main+0x140>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 27c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 27e:	d9 f7       	brne	.-10     	; 0x276 <main+0x13e>
+	_delay_ms(500);
+	wdt_reset();	
+ 280:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 282:	2f 5f       	subi	r18, 0xFF	; 255
+ 284:	23 30       	cpi	r18, 0x03	; 3
+ 286:	19 f0       	breq	.+6      	; 0x28e <main+0x156>
+ 288:	88 e8       	ldi	r24, 0x88	; 136
+ 28a:	93 e1       	ldi	r25, 0x13	; 19
+ 28c:	ec cf       	rjmp	.-40     	; 0x266 <main+0x12e>
+				y5_lo();
+				y6_lo();
+				delay(4);
+				y3_hi();//starter on
+				delay(3);
+				y3_lo();//starter off
+ 28e:	c2 98       	cbi	0x18, 2	; 24
+				y2_lo();//pre heat off
+ 290:	c3 98       	cbi	0x18, 3	; 24
+ 292:	20 e0       	ldi	r18, 0x00	; 0
+ 294:	11 c0       	rjmp	.+34     	; 0x2b8 <main+0x180>
+ 296:	fe 01       	movw	r30, r28
+ 298:	31 97       	sbiw	r30, 0x01	; 1
+ 29a:	f1 f7       	brne	.-4      	; 0x298 <main+0x160>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 29c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 29e:	d9 f7       	brne	.-10     	; 0x296 <main+0x15e>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 2a0:	a8 95       	wdr
+ 2a2:	88 e8       	ldi	r24, 0x88	; 136
+ 2a4:	93 e1       	ldi	r25, 0x13	; 19
+ 2a6:	fe 01       	movw	r30, r28
+ 2a8:	31 97       	sbiw	r30, 0x01	; 1
+ 2aa:	f1 f7       	brne	.-4      	; 0x2a8 <main+0x170>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2ac:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2ae:	d9 f7       	brne	.-10     	; 0x2a6 <main+0x16e>
+	_delay_ms(500);
+	wdt_reset();	
+ 2b0:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 2b2:	2f 5f       	subi	r18, 0xFF	; 255
+ 2b4:	2a 30       	cpi	r18, 0x0A	; 10
+ 2b6:	19 f0       	breq	.+6      	; 0x2be <main+0x186>
+ 2b8:	88 e8       	ldi	r24, 0x88	; 136
+ 2ba:	93 e1       	ldi	r25, 0x13	; 19
+ 2bc:	ec cf       	rjmp	.-40     	; 0x296 <main+0x15e>
+				y3_hi();//starter on
+				delay(3);
+				y3_lo();//starter off
+				y2_lo();//pre heat off
+				delay(10);
+				if(read_pln()) break;
+ 2be:	0a df       	rcall	.-492    	; 0xd4 <read_pln>
+ 2c0:	88 23       	and	r24, r24
+ 2c2:	39 f4       	brne	.+14     	; 0x2d2 <main+0x19a>
+				if(read_genset())break;
+ 2c4:	cf de       	rcall	.-610    	; 0x64 <read_genset>
+ 2c6:	88 23       	and	r24, r24
+ 2c8:	21 f4       	brne	.+8      	; 0x2d2 <main+0x19a>
+		if(!read_pln()){			//pln mati
+			y1_hi();//acc on
+/******************************************************************************/
+//			SETARTER 3 KALI
+/******************************************************************************/
+			for(i=0;i<3;i++){
+ 2ca:	1f 5f       	subi	r17, 0xFF	; 255
+ 2cc:	13 30       	cpi	r17, 0x03	; 3
+ 2ce:	09 f0       	breq	.+2      	; 0x2d2 <main+0x19a>
+ 2d0:	ac cf       	rjmp	.-168    	; 0x22a <main+0xf2>
+				if(read_genset())break;
+			}
+/******************************************************************************/
+//			GENSET HIDUP DI SINI :D
+/******************************************************************************/
+			if(read_genset()) delay(4);//TUNDA SEBELUM KONTAKTOR GENSET ON
+ 2d2:	c8 de       	rcall	.-624    	; 0x64 <read_genset>
+ 2d4:	88 23       	and	r24, r24
+ 2d6:	b1 f0       	breq	.+44     	; 0x304 <main+0x1cc>
+ 2d8:	20 e0       	ldi	r18, 0x00	; 0
+ 2da:	11 c0       	rjmp	.+34     	; 0x2fe <main+0x1c6>
+ 2dc:	fe 01       	movw	r30, r28
+ 2de:	31 97       	sbiw	r30, 0x01	; 1
+ 2e0:	f1 f7       	brne	.-4      	; 0x2de <main+0x1a6>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2e2:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2e4:	d9 f7       	brne	.-10     	; 0x2dc <main+0x1a4>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 2e6:	a8 95       	wdr
+ 2e8:	88 e8       	ldi	r24, 0x88	; 136
+ 2ea:	93 e1       	ldi	r25, 0x13	; 19
+ 2ec:	fe 01       	movw	r30, r28
+ 2ee:	31 97       	sbiw	r30, 0x01	; 1
+ 2f0:	f1 f7       	brne	.-4      	; 0x2ee <main+0x1b6>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2f2:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2f4:	d9 f7       	brne	.-10     	; 0x2ec <main+0x1b4>
+	_delay_ms(500);
+	wdt_reset();	
+ 2f6:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 2f8:	2f 5f       	subi	r18, 0xFF	; 255
+ 2fa:	24 30       	cpi	r18, 0x04	; 4
+ 2fc:	19 f0       	breq	.+6      	; 0x304 <main+0x1cc>
+ 2fe:	88 e8       	ldi	r24, 0x88	; 136
+ 300:	93 e1       	ldi	r25, 0x13	; 19
+ 302:	ec cf       	rjmp	.-40     	; 0x2dc <main+0x1a4>
+ 304:	88 e8       	ldi	r24, 0x88	; 136
+ 306:	93 e1       	ldi	r25, 0x13	; 19
+ 308:	fe 01       	movw	r30, r28
+ 30a:	31 97       	sbiw	r30, 0x01	; 1
+ 30c:	f1 f7       	brne	.-4      	; 0x30a <main+0x1d2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 30e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 310:	d9 f7       	brne	.-10     	; 0x308 <main+0x1d0>
+	_delay_ms(500);
+	wdt_reset();
+ 312:	a8 95       	wdr
+ 314:	88 e8       	ldi	r24, 0x88	; 136
+ 316:	93 e1       	ldi	r25, 0x13	; 19
+ 318:	fe 01       	movw	r30, r28
+ 31a:	31 97       	sbiw	r30, 0x01	; 1
+ 31c:	f1 f7       	brne	.-4      	; 0x31a <main+0x1e2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 31e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 320:	d9 f7       	brne	.-10     	; 0x318 <main+0x1e0>
+	_delay_ms(500);
+	wdt_reset();	
+ 322:	a8 95       	wdr
+//			GENSET HIDUP DI SINI :D
+/******************************************************************************/
+			if(read_genset()) delay(4);//TUNDA SEBELUM KONTAKTOR GENSET ON
+				do{
+					delay(1);
+					y1_out();
+ 324:	be 9a       	sbi	0x17, 6	; 23
+					y2_out();
+ 326:	bb 9a       	sbi	0x17, 3	; 23
+					y3_out();
+ 328:	ba 9a       	sbi	0x17, 2	; 23
+					y4_out();
+ 32a:	b9 9a       	sbi	0x17, 1	; 23
+					y5_out();
+ 32c:	b8 9a       	sbi	0x17, 0	; 23
+					y6_out();
+ 32e:	bc 9a       	sbi	0x17, 4	; 23
+ 330:	c7 01       	movw	r24, r14
+ 332:	01 97       	sbiw	r24, 0x01	; 1
+ 334:	f1 f7       	brne	.-4      	; 0x332 <main+0x1fa>
+					delay_10ms();
+					if(read_genset()&&!sensor()){
+ 336:	96 de       	rcall	.-724    	; 0x64 <read_genset>
+ 338:	88 23       	and	r24, r24
+ 33a:	49 f0       	breq	.+18     	; 0x34e <main+0x216>
+ 33c:	ab de       	rcall	.-682    	; 0x94 <sensor>
+ 33e:	88 23       	and	r24, r24
+ 340:	31 f4       	brne	.+12     	; 0x34e <main+0x216>
+						y1_hi();//acc on
+ 342:	c6 9a       	sbi	0x18, 6	; 24
+						y2_lo();
+ 344:	c3 98       	cbi	0x18, 3	; 24
+						y3_lo();
+ 346:	c2 98       	cbi	0x18, 2	; 24
+						y4_hi();//genset on
+ 348:	c1 9a       	sbi	0x18, 1	; 24
+						y5_lo();
+ 34a:	c0 98       	cbi	0x18, 0	; 24
+ 34c:	16 c0       	rjmp	.+44     	; 0x37a <main+0x242>
+				   }//genset hidup
+/******************************************************************************/
+//			ALARAM BUZER DI BAWAH SINI YA
+/******************************************************************************/
+					else{
+						y1_lo();
+ 34e:	c6 98       	cbi	0x18, 6	; 24
+						y2_lo();
+ 350:	c3 98       	cbi	0x18, 3	; 24
+						y3_lo();
+ 352:	c2 98       	cbi	0x18, 2	; 24
+						y4_lo();
+ 354:	c1 98       	cbi	0x18, 1	; 24
+						y5_lo();
+ 356:	c0 98       	cbi	0x18, 0	; 24
+						y6_hi();//buzer on
+ 358:	c4 9a       	sbi	0x18, 4	; 24
+ 35a:	88 e8       	ldi	r24, 0x88	; 136
+ 35c:	93 e1       	ldi	r25, 0x13	; 19
+ 35e:	fe 01       	movw	r30, r28
+ 360:	31 97       	sbiw	r30, 0x01	; 1
+ 362:	f1 f7       	brne	.-4      	; 0x360 <main+0x228>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 364:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 366:	d9 f7       	brne	.-10     	; 0x35e <main+0x226>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 368:	a8 95       	wdr
+ 36a:	88 e8       	ldi	r24, 0x88	; 136
+ 36c:	93 e1       	ldi	r25, 0x13	; 19
+ 36e:	fe 01       	movw	r30, r28
+ 370:	31 97       	sbiw	r30, 0x01	; 1
+ 372:	f1 f7       	brne	.-4      	; 0x370 <main+0x238>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 374:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 376:	d9 f7       	brne	.-10     	; 0x36e <main+0x236>
+	_delay_ms(500);
+	wdt_reset();	
+ 378:	a8 95       	wdr
+						y3_lo();
+						y4_lo();
+						y5_lo();
+						y6_hi();//buzer on
+						delay(1);
+						y6_lo();//buzer off
+ 37a:	c4 98       	cbi	0x18, 4	; 24
+						}//genset mati
+				}while(!read_pln());
+ 37c:	ab de       	rcall	.-682    	; 0xd4 <read_pln>
+ 37e:	88 23       	and	r24, r24
+ 380:	09 f4       	brne	.+2      	; 0x384 <main+0x24c>
+ 382:	c0 cf       	rjmp	.-128    	; 0x304 <main+0x1cc>
+				wdt_reset();
+ 384:	a8 95       	wdr
+			}
+/******************************************************************************/
+//			PLN SUDAH HIDUP DI SINI :D
+/******************************************************************************/
+	y2_lo();
+ 386:	c3 98       	cbi	0x18, 3	; 24
+	y3_lo();
+ 388:	c2 98       	cbi	0x18, 2	; 24
+	y4_lo();
+ 38a:	c1 98       	cbi	0x18, 1	; 24
+	y5_lo();
+ 38c:	c0 98       	cbi	0x18, 0	; 24
+	y6_lo();
+ 38e:	c4 98       	cbi	0x18, 4	; 24
+ 390:	20 e0       	ldi	r18, 0x00	; 0
+ 392:	12 c0       	rjmp	.+36     	; 0x3b8 <main+0x280>
+ 394:	fe 01       	movw	r30, r28
+ 396:	31 97       	sbiw	r30, 0x01	; 1
+ 398:	f1 f7       	brne	.-4      	; 0x396 <main+0x25e>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 39a:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 39c:	d9 f7       	brne	.-10     	; 0x394 <main+0x25c>
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+	_delay_ms(500);
+	wdt_reset();
+ 39e:	a8 95       	wdr
+ 3a0:	88 e8       	ldi	r24, 0x88	; 136
+ 3a2:	93 e1       	ldi	r25, 0x13	; 19
+ 3a4:	fe 01       	movw	r30, r28
+ 3a6:	31 97       	sbiw	r30, 0x01	; 1
+ 3a8:	f1 f7       	brne	.-4      	; 0x3a6 <main+0x26e>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 3aa:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 3ac:	d9 f7       	brne	.-10     	; 0x3a4 <main+0x26c>
+	_delay_ms(500);
+	wdt_reset();	
+ 3ae:	a8 95       	wdr
+	return a;
+}
+/******************************************************************************/
+void delay(unsigned char wait){
+unsigned char tunggu;
+for ( tunggu=0;tunggu<wait;tunggu++){
+ 3b0:	2f 5f       	subi	r18, 0xFF	; 255
+ 3b2:	2a 30       	cpi	r18, 0x0A	; 10
+ 3b4:	09 f4       	brne	.+2      	; 0x3b8 <main+0x280>
+ 3b6:	2f cf       	rjmp	.-418    	; 0x216 <main+0xde>
+ 3b8:	88 e8       	ldi	r24, 0x88	; 136
+ 3ba:	93 e1       	ldi	r25, 0x13	; 19
+ 3bc:	eb cf       	rjmp	.-42     	; 0x394 <main+0x25c>
+
+000003be <_exit>:
+ 3be:	f8 94       	cli
+
+000003c0 <__stop_program>:
+ 3c0:	ff cf       	rjmp	.-2      	; 0x3c0 <__stop_program>
